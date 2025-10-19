@@ -51,7 +51,7 @@
     }
     #cartel {
       position: absolute;
-      top: 20px;
+      top: 120px;
       background: #ffeb3b;
       color: #000;
       padding: 10px 20px;
@@ -98,7 +98,7 @@
   <audio id="audio2" src="audio2.mp3" preload="auto"></audio>
   <audio id="audio3" src="audio3.mp3" preload="auto"></audio>
 
-  <video id="video4" src="video4.mp4" muted playsinline></video>
+  <video id="video4" src="video4.mp4" playsinline></video>
 
   <div class="card">
     <h2>🎉 Tocá la imagen</h2>
@@ -133,15 +133,12 @@
 
     function reproducirAudio(index) {
       audios.forEach((audio, i) => {
+        audio.pause();
+        audio.currentTime = 0;
         if (i === index) {
-          audio.pause();
-          audio.currentTime = 0;
           audio.play().catch(() => {
             console.log(`Autoplay bloqueado para audio ${i + 1}`);
           });
-        } else {
-          audio.pause();
-          audio.currentTime = 0;
         }
       });
     }
@@ -152,6 +149,8 @@
     });
 
     function mostrarCuentaRegresiva() {
+      audio3.pause();
+      audio3.currentTime = 0;
       video4.style.display = "block";
       video4.currentTime = 0;
       video4.play().catch(() => {});
