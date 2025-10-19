@@ -14,6 +14,7 @@
       height: 100vh;
       margin: 0;
       position: relative;
+      overflow: hidden;
     }
     .card {
       background: white;
@@ -22,6 +23,8 @@
       box-shadow: 0 8px 20px rgba(0,0,0,0.2);
       text-align: center;
       max-width: 400px;
+      z-index: 2;
+      position: relative;
     }
     h2 {
       color: #00796b;
@@ -33,6 +36,16 @@
       cursor: pointer;
       opacity: 1;
       transition: opacity 0.5s ease;
+    }
+    video#video4 {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: 1;
+      display: none;
     }
     img.fade-out, video.fade-out {
       opacity: 0;
@@ -48,7 +61,6 @@
     }
     #cartel, #cartel2 {
       position: absolute;
-      top: 20px;
       padding: 10px 20px;
       border-radius: 20px;
       font-weight: bold;
@@ -57,12 +69,15 @@
       opacity: 0;
       transform: scale(0.8);
       transition: opacity 0.8s ease, transform 0.5s ease;
+      z-index: 3;
     }
     #cartel {
+      top: 20px;
       background: #ffeb3b;
       color: #000;
     }
     #cartel2 {
+      top: 80px;
       background: #ffccbc;
       color: #000;
     }
@@ -70,16 +85,21 @@
       opacity: 1;
       transform: scale(1);
     }
+    #cuenta {
+      position: absolute;
+      bottom: 30px;
+      font-size: 40px;
+      font-weight: bold;
+      color: #00796b;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      z-index: 3;
+    }
+    #cuenta.visible {
+      opacity: 1;
+    }
     #reiniciar {
       display: none;
-      margin-top: 15px;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 20px;
-      background: #00796b;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
     }
   </style>
 </head>
@@ -88,11 +108,12 @@
   <audio id="audio2" src="audio2.mp3" preload="auto"></audio>
   <audio id="audio3" src="audio3.mp3" preload="auto"></audio>
 
+  <video id="video4" src="video4.mp4" muted playsinline></video>
+
   <div class="card">
     <h2>🎉 Tocá la imagen</h2>
     <img id="imagen" src="imagen1.png" alt="Imagen 1" onclick="cambiarImagen()">
     <video id="video3" src="video3.mp4" style="display:none;" muted playsinline></video>
-    <video id="video4" src="video4.mp4" style="display:none;" muted playsinline></video>
     <p id="estado">Mostrando imagen 1</p>
     <div id="frases"></div>
     <button id="reiniciar">🔄 Volver a empezar</button>
@@ -100,6 +121,7 @@
 
   <div id="cartel">¡Vamos juntos!</div>
   <div id="cartel2">Me gustaría que me acompañes</div>
+  <div id="cuenta"></div>
 
   <script>
     let imagenActual = 1;
@@ -110,6 +132,7 @@
     const frases = document.getElementById('frases');
     const cartel = document.getElementById('cartel');
     const cartel2 = document.getElementById('cartel2');
+    const cuenta = document.getElementById('cuenta');
     const reiniciar = document.getElementById('reiniciar');
 
     const audio1 = document.getElementById('audio1');
@@ -139,17 +162,34 @@
       });
     }
 
+    function mostrarCuentaRegresiva() {
+      let n = 3;
+      cuenta.classList.add('visible');
+      cuenta.textContent = n;
+      const intervalo = setInterval(() => {
+        n--;
+        if (n > 0) {
+          cuenta.textContent = n;
+        } else {
+          clearInterval(intervalo);
+          cuenta.classList.remove('visible');
+          window.open("https://wa.me/5491135936634?text=siiiiiiiiii%20vamoosssss%20juntos", "_blank");
+        }
+      }, 1000);
+    }
+
     reiniciar.addEventListener('click', () => {
       imagenActual = 1;
       img.style.display = "block";
       video3.style.display = "none";
       video4.style.display = "none";
+      video4.pause();
       img.src = imagenes[0];
       estado.textContent = "Mostrando imagen 1";
       frases.innerHTML = "";
       cartel.classList.remove('visible');
       cartel2.classList.remove('visible');
-      reiniciar.style.display = "none";
+      cuenta.classList.remove('visible');
       reproducirAudio(0);
     });
 
@@ -161,7 +201,6 @@
     function cambiarImagen() {
       img.classList.add('fade-out');
       video3.classList.add('fade-out');
-      video4.classList.add('fade-out');
 
       setTimeout(() => {
         imagenActual = (imagenActual % 3) + 1;
@@ -169,13 +208,11 @@
         if (imagenActual === 3) {
           img.style.display = "none";
           video3.style.display = "block";
-          video4.style.display = "none";
           video3.currentTime = 0;
           video3.play();
         } else {
           img.style.display = "block";
           video3.style.display = "none";
-          video4.style.display = "none";
           img.src = imagenes[imagenActual - 1];
         }
 
@@ -187,18 +224,13 @@
 
         img.classList.remove('fade-out');
         video3.classList.remove('fade-out');
-        video4.classList.remove('fade-out');
 
         cartel.classList.remove('visible');
         cartel2.classList.remove('visible');
-        reiniciar.style.display = "none";
+        cuenta.classList.remove('visible');
 
         if (imagenActual === 2) {
           cartel2.classList.add('visible');
-        }
-
-        if (imagenActual === 3) {
-          reiniciar.style.display = "inline-block";
         }
       }, 500);
     }
@@ -208,16 +240,9 @@
       video4.style.display = "block";
       video4.currentTime = 0;
       video4.play();
-    });
-
-    video4.addEventListener('ended', () => {
       cartel.classList.add('visible');
-      setTimeout(() => {
-        window.location.href = "https://wa.me/5491135936634?text=siiiiiiiiii%20vamoosssss%20juntos";
-      }, 2000);
+      mostrarCuentaRegresiva();
     });
   </script>
 </body>
 </html>
-     
-         
