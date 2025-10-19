@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Tarjeta Interactiva</title>
+  <title>Tarjeta Interactiva con Música</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
@@ -38,22 +38,49 @@
   </style>
 </head>
 <body>
+  <!-- Audios ocultos -->
+  <audio id="audio1" src="musica1.mp3" loop></audio>
+  <audio id="audio2" src="musica2.mp3" loop></audio>
+  <audio id="audio3" src="musica3.mp3" loop></audio>
+
   <div class="card">
     <h2>🎉 Tocá la imagen</h2>
     <img id="imagen" src="imagen1.png" alt="Imagen 1" onclick="cambiarImagen()">
+    <p id="estado" style="margin-top: 10px; color: #555;">Mostrando imagen 1</p>
   </div>
 
   <script>
     let imagenActual = 1;
+    const img = document.getElementById('imagen');
+    const estado = document.getElementById('estado');
+    const audios = [
+      document.getElementById('audio1'),
+      document.getElementById('audio2'),
+      document.getElementById('audio3')
+    ];
+    const imagenes = ['imagen1.png', 'imagen2.png', 'imagen3.png'];
+
+    function reproducirAudio(index) {
+      audios.forEach((audio, i) => {
+        if (i === index) {
+          audio.currentTime = 0;
+          audio.play();
+        } else {
+          audio.pause();
+          audio.currentTime = 0;
+        }
+      });
+    }
+
+    window.addEventListener('load', () => {
+      reproducirAudio(0);
+    });
+
     function cambiarImagen() {
-      const img = document.getElementById('imagen');
-      if (imagenActual === 1) {
-        img.src = 'imagen2.png';
-        imagenActual = 2;
-      } else {
-        img.src = 'imagen1.png';
-        imagenActual = 1;
-      }
+      imagenActual = (imagenActual % 3) + 1;
+      img.src = imagenes[imagenActual - 1];
+      estado.textContent = `Mostrando imagen ${imagenActual}`;
+      reproducirAudio(imagenActual - 1);
     }
   </script>
 </body>
