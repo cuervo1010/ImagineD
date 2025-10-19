@@ -13,6 +13,7 @@
       align-items: center;
       height: 100vh;
       margin: 0;
+      position: relative;
     }
     .card {
       background: white;
@@ -45,6 +46,22 @@
       font-size: 16px;
       color: #444;
     }
+    #cartel {
+      position: absolute;
+      top: 20px;
+      background: #ffeb3b;
+      color: #000;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 18px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      opacity: 0;
+      transition: opacity 0.8s ease;
+    }
+    #cartel.visible {
+      opacity: 1;
+    }
   </style>
 </head>
 <body>
@@ -59,11 +76,14 @@
     <div id="frases"></div>
   </div>
 
+  <div id="cartel">¡Vamos juntos!</div>
+
   <script>
     let imagenActual = 1;
     const img = document.getElementById('imagen');
     const estado = document.getElementById('estado');
     const frases = document.getElementById('frases');
+    const cartel = document.getElementById('cartel');
 
     const audio1 = document.getElementById('audio1');
     const audio2 = document.getElementById('audio2');
@@ -73,7 +93,7 @@
     const imagenes = ['imagen1.png', 'imagen2.png', 'imagen3.png'];
     const textos = [
       [],
-      ["Me gustaría que vengas"],
+      ["Me gastaría que vengas"],
       ["Máximo esfuerzo"]
     ];
 
@@ -113,8 +133,14 @@
 
         if (imagenActual === 3) {
           setTimeout(() => {
+            cartel.classList.add('visible');
+          }, 1000);
+
+          setTimeout(() => {
             window.location.href = "https://wa.me/5491165515156?text=siiiiiiiiii%20vamoosssss%20juntos";
-          }, 1000); // espera 1 segundo antes de redirigir
+          }, 5000); // 2 segundos más de espera
+        } else {
+          cartel.classList.remove('visible');
         }
       }, 500);
     }
