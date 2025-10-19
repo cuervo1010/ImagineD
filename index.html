@@ -98,7 +98,7 @@
   <audio id="audio2" src="audio2.mp3" preload="auto"></audio>
   <audio id="audio3" src="audio3.mp3" preload="auto"></audio>
 
-  <video id="video4" src="video4.mp4" playsinline></video>
+  <video id="video4" src="video4.mp4" autoplay playsinline></video>
 
   <div class="card">
     <h2>🎉 Tocá la imagen</h2>
@@ -153,7 +153,9 @@
       audio3.currentTime = 0;
       video4.style.display = "block";
       video4.currentTime = 0;
-      video4.play().catch(() => {});
+      video4.play().catch(() => {
+        console.log("Autoplay bloqueado para video 4");
+      });
       let n = 3;
       cuenta.classList.add('visible');
       cuenta.textContent = n;
@@ -199,3 +201,5 @@
   </script>
 </body>
 </html>
+      
+     
