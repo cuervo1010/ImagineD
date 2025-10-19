@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Tarjeta Interactiva con Música</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <title>Tarjeta Interactiva</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #f0f8ff, #e0f7fa);
+      margin: 0;
+      font-family: sans-serif;
+      background: #e0f7fa;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      margin: 0;
-      position: relative;
       overflow: hidden;
+      position: relative;
     }
     .card {
       background: white;
@@ -26,15 +26,9 @@
       z-index: 2;
       position: relative;
     }
-    h2 {
-      color: #00796b;
-      margin-bottom: 20px;
-    }
     img, video {
       width: 100%;
       border-radius: 10px;
-      cursor: pointer;
-      opacity: 1;
       transition: opacity 0.5s ease;
     }
     video#video4 {
@@ -46,18 +40,6 @@
       object-fit: cover;
       z-index: 1;
       display: none;
-    }
-    img.fade-out, video.fade-out {
-      opacity: 0;
-    }
-    #estado {
-      margin-top: 10px;
-      color: #555;
-    }
-    #frases p {
-      margin: 5px 0;
-      font-size: 16px;
-      color: #444;
     }
     #cartel, #cartel2 {
       position: absolute;
@@ -98,9 +80,6 @@
     #cuenta.visible {
       opacity: 1;
     }
-    #reiniciar {
-      display: none;
-    }
   </style>
 </head>
 <body>
@@ -108,4 +87,113 @@
   <audio id="audio2" src="audio2.mp3" preload="auto"></audio>
   <audio id="audio3" src="audio3.mp3" preload="auto"></audio>
 
-  <video id="video4" src="video4.mp4" muted playsinline>
+  <video id="video4" src="video4.mp4" muted playsinline></video>
+
+  <div class="card">
+    <h2>🎉 Tocá la imagen</h2>
+    <img id="imagen" src="imagen1.png" alt="Imagen 1" />
+    <video id="video3" src="video3.mp4" style="display:none;" muted playsinline></video>
+    <p id="estado">Mostrando imagen 1</p>
+    <div id="frases"></div>
+  </div>
+
+  <div id="cartel">¡Vamos juntos!</div>
+  <div id="cartel2">Me gustaría que me acompañes</div>
+  <div id="cuenta"></div>
+
+  <script>
+    let imagenActual = 1;
+    let bloqueado = false;
+    const img = document.getElementById('imagen');
+    const video3 = document.getElementById('video3');
+    const video4 = document.getElementById('video4');
+    const estado = document.getElementById('estado');
+    const frases = document.getElementById('frases');
+    const cartel = document.getElementById('cartel');
+    const cartel2 = document.getElementById('cartel2');
+    const cuenta = document.getElementById('cuenta');
+
+    const audio1 = document.getElementById('audio1');
+    const audio2 = document.getElementById('audio2');
+    const audio3 = document.getElementById('audio3');
+    const audios = [audio1, audio2, audio3];
+    const imagenes = ['imagen1.png', 'imagen2.png', null];
+    const textos = [
+      [],
+      ["Me gastaría que vengas"],
+      ["Máximo esfuerzo"]
+    ];
+
+    function reproducirAudio(index) {
+      audios.forEach((audio, i) => {
+        audio.pause();
+        audio.currentTime = 0;
+        if (i === index) {
+          audio.play().catch(() => {});
+        }
+      });
+    }
+
+    function abrirWhatsApp() {
+      const mensaje = "siiiiiiiiii vamoosssss juntos";
+      const telefono = "5491135936634";
+      const textoCodificado = encodeURIComponent(mensaje);
+      const esMovil = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+      if (esMovil) {
+        window.location.href = `whatsapp://send?phone=${telefono}&text=${textoCodificado}`;
+      } else {
+        window.open(`https://wa.me/${telefono}?text=${textoCodificado}`, "_blank");
+      }
+    }
+
+    function mostrarCuentaRegresiva() {
+      let n = 3;
+      cuenta.classList.add('visible');
+      cuenta.textContent = n;
+      const intervalo = setInterval(() => {
+        n--;
+        if (n > 0) {
+          cuenta.textContent = n;
+        } else {
+          clearInterval(intervalo);
+          cuenta.classList.remove('visible');
+          abrirWhatsApp();
+        }
+      }, 1000);
+    }
+
+    img.addEventListener('click', () => {
+      if (bloqueado) return;
+      bloqueado = true;
+      imagenActual = (imagenActual % 3) + 1;
+
+      if (imagenActual === 3) {
+        img.style.display = "none";
+        video3.style.display = "block";
+        video3.currentTime = 0;
+        video3.play();
+      } else {
+        img.src = imagenes[imagenActual - 1];
+        estado.textContent = `Mostrando imagen ${imagenActual}`;
+        frases.innerHTML = textos[imagenActual - 1].map(t => `<p>${t}</p>`).join("");
+        reproducirAudio(imagenActual - 1);
+        if (imagenActual === 2) cartel2.classList.add('visible');
+        bloqueado = false;
+      }
+    });
+
+    video3.addEventListener('ended', () => {
+      video3.style.display = "none";
+      video4.style.display = "block";
+      video4.currentTime = 0;
+      video4.play().catch(() => {});
+      cartel.classList.add('visible');
+      mostrarCuentaRegresiva();
+    });
+
+    window.addEventListener('load', () => {
+      reproducirAudio(0);
+    });
+  </script>
+</body>
+</html>
