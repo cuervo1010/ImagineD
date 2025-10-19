@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -34,16 +33,11 @@
     img {
       width: 100%;
       border-radius: 10px;
-      cursor: pointer;
       opacity: 1;
       transition: opacity 0.5s ease;
     }
     img.fade-out {
       opacity: 0;
-    }
-    img.oculto {
-      opacity: 0;
-      pointer-events: none;
     }
     #estado {
       margin-top: 10px;
@@ -86,6 +80,21 @@
     #cuenta.visible {
       opacity: 1;
     }
+    #botonTocar {
+      margin-top: 15px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #00796b;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+    #botonTocar.visible {
+      opacity: 1;
+    }
   </style>
 </head>
 <body>
@@ -94,8 +103,9 @@
   <audio id="audio3" src="audio3.mp3" preload="auto"></audio>
 
   <div class="card">
-    <h2>🎉 Tocá la imagen</h2>
-    <img id="imagen" class="oculto" src="imagen1.png" alt="Imagen 1" onclick="cambiarImagen()">
+    <h2>🎉</h2>
+    <img id="imagen" src="imagen1.png" alt="Imagen 1">
+    <button id="botonTocar" onclick="cambiarImagen()">Tocá la imagen</button>
     <p id="estado">Mostrando imagen 1</p>
     <div id="frases"></div>
   </div>
@@ -106,6 +116,7 @@
   <script>
     let imagenActual = 1;
     const img = document.getElementById('imagen');
+    const boton = document.getElementById('botonTocar');
     const estado = document.getElementById('estado');
     const frases = document.getElementById('frases');
     const cartel = document.getElementById('cartel');
@@ -158,12 +169,13 @@
       frases.innerHTML = "";
       mostrarCuentaRegresiva(5);
       setTimeout(() => {
-        img.classList.remove('oculto');
-      }, 3000); // aparece después de 3 segundos
+        boton.classList.add('visible');
+      }, 3000);
     });
 
     function cambiarImagen() {
       img.classList.add('fade-out');
+      boton.classList.remove('visible');
 
       setTimeout(() => {
         imagenActual = (imagenActual % 3) + 1;
@@ -189,10 +201,12 @@
           cuenta.classList.remove('visible');
           mostrarCuentaRegresiva(5);
         }
+
+        setTimeout(() => {
+          boton.classList.add('visible');
+        }, 3000);
       }, 500);
     }
   </script>
 </body>
 </html>
-    
-     
