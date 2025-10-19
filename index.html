@@ -28,7 +28,22 @@
     }
     h2 {
       color: #00796b;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
+    }
+    #botonTocar {
+      margin-bottom: 15px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #00796b;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+    #botonTocar.visible {
+      opacity: 1;
     }
     img {
       width: 100%;
@@ -80,21 +95,6 @@
     #cuenta.visible {
       opacity: 1;
     }
-    #botonTocar {
-      margin-top: 15px;
-      padding: 10px 20px;
-      font-size: 16px;
-      background-color: #00796b;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      opacity: 0;
-      transition: opacity 0.5s ease;
-    }
-    #botonTocar.visible {
-      opacity: 1;
-    }
   </style>
 </head>
 <body>
@@ -104,8 +104,8 @@
 
   <div class="card">
     <h2>🎉</h2>
-    <img id="imagen" src="imagen1.png" alt="Imagen 1">
     <button id="botonTocar" onclick="cambiarImagen()">Tocá la imagen</button>
+    <img id="imagen" src="imagen1.png" alt="Imagen 1">
     <p id="estado">Mostrando imagen 1</p>
     <div id="frases"></div>
   </div>
@@ -165,7 +165,6 @@
     window.addEventListener('load', () => {
       reproducirAudio(0);
       frases.innerHTML = "";
-      mostrarCuentaRegresiva(5);
       setTimeout(() => {
         boton.classList.add('visible');
       }, 3000);
@@ -184,12 +183,11 @@
         const contenido = textos[imagenActual - 1];
         frases.innerHTML = contenido.map(linea => `<p>${linea}</p>`).join("");
 
-        reproducirAudio(imagenActual - 1); // ✅ ahora se llama justo después del cambio visual
+        reproducirAudio(imagenActual - 1);
 
         if (imagenActual === 2) {
           cartel.textContent = "Me gustaría que me acompañes";
           cartel.classList.add('visible');
-          mostrarCuentaRegresiva(5);
         } else if (imagenActual === 3) {
           cartel.textContent = "¡Vamos juntos!";
           cartel.classList.add('visible');
@@ -197,7 +195,6 @@
         } else {
           cartel.classList.remove('visible');
           cuenta.classList.remove('visible');
-          mostrarCuentaRegresiva(5);
         }
 
         setTimeout(() => {
@@ -208,5 +205,3 @@
   </script>
 </body>
 </html>
-    
-   
