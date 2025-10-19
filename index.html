@@ -130,13 +130,8 @@
       });
     }
 
-    window.addEventListener('load', () => {
-      reproducirAudio(0);
-      frases.innerHTML = "";
-    });
-
-    function mostrarCuentaRegresiva() {
-      let n = 3;
+    function mostrarCuentaRegresiva(segundos, abrirWhatsApp = false) {
+      let n = segundos;
       cuenta.classList.add('visible');
       cuenta.textContent = n;
       const intervalo = setInterval(() => {
@@ -146,10 +141,18 @@
         } else {
           clearInterval(intervalo);
           cuenta.classList.remove('visible');
-          window.location.href = "https://wa.me/5491135936634?text=siiiiiiiiii%20vamoosssss%20juntos";
+          if (abrirWhatsApp) {
+            window.location.href = "https://wa.me/5491135936634?text=siiiiiiiiii%20vamoosssss%20juntos";
+          }
         }
       }, 1000);
     }
+
+    window.addEventListener('load', () => {
+      reproducirAudio(0);
+      frases.innerHTML = "";
+      mostrarCuentaRegresiva(5);
+    });
 
     function cambiarImagen() {
       img.classList.add('fade-out');
@@ -168,13 +171,15 @@
         if (imagenActual === 2) {
           cartel.textContent = "Me gustaría que me acompañes";
           cartel.classList.add('visible');
+          mostrarCuentaRegresiva(5);
         } else if (imagenActual === 3) {
           cartel.textContent = "¡Vamos juntos!";
           cartel.classList.add('visible');
-          mostrarCuentaRegresiva();
+          mostrarCuentaRegresiva(3, true);
         } else {
           cartel.classList.remove('visible');
           cuenta.classList.remove('visible');
+          mostrarCuentaRegresiva(5);
         }
       }, 500);
     }
