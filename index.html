@@ -57,9 +57,23 @@
       font-size: 18px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.2);
       opacity: 0;
-      transition: opacity 0.8s ease;
+      transform: scale(0.8);
+      transition: opacity 0.8s ease, transform 0.5s ease;
     }
     #cartel.visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+    #cuenta {
+      position: absolute;
+      bottom: 30px;
+      font-size: 40px;
+      font-weight: bold;
+      color: #00796b;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+    #cuenta.visible {
       opacity: 1;
     }
   </style>
@@ -77,6 +91,7 @@
   </div>
 
   <div id="cartel">¡Vamos juntos!</div>
+  <div id="cuenta"></div>
 
   <script>
     let imagenActual = 1;
@@ -84,6 +99,7 @@
     const estado = document.getElementById('estado');
     const frases = document.getElementById('frases');
     const cartel = document.getElementById('cartel');
+    const cuenta = document.getElementById('cuenta');
 
     const audio1 = document.getElementById('audio1');
     const audio2 = document.getElementById('audio2');
@@ -93,7 +109,7 @@
     const imagenes = ['imagen1.png', 'imagen2.png', 'imagen3.png'];
     const textos = [
       [],
-      ["Me gustaría que vengas"],
+      ["Me gastaría que vengas"],
       ["Máximo esfuerzo"]
     ];
 
@@ -117,6 +133,22 @@
       frases.innerHTML = "";
     });
 
+    function mostrarCuentaRegresiva() {
+      let n = 3;
+      cuenta.classList.add('visible');
+      cuenta.textContent = n;
+      const intervalo = setInterval(() => {
+        n--;
+        if (n > 0) {
+          cuenta.textContent = n;
+        } else {
+          clearInterval(intervalo);
+          cuenta.classList.remove('visible');
+          window.location.href = "https://wa.me/5491135936634?text=siiiiiiiiii%20vamoosssss%20juntos";
+        }
+      }, 1000);
+    }
+
     function cambiarImagen() {
       img.classList.add('fade-out');
 
@@ -134,13 +166,11 @@
         if (imagenActual === 3) {
           setTimeout(() => {
             cartel.classList.add('visible');
+            mostrarCuentaRegresiva();
           }, 1000);
-
-          setTimeout(() => {
-            window.location.href = "https://wa.me/5491135936634?text=siiiiiiiiii%20vamoosssss%20juntos";
-          }, 5000); // 2 segundos más de espera
         } else {
           cartel.classList.remove('visible');
+          cuenta.classList.remove('visible');
         }
       }, 500);
     }
