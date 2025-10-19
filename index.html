@@ -81,24 +81,12 @@
     #cuenta.visible {
       opacity: 1;
     }
-    video#video4 {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      object-fit: cover;
-      z-index: 1;
-      display: none;
-    }
   </style>
 </head>
 <body>
   <audio id="audio1" src="audio1.mp3" preload="auto"></audio>
   <audio id="audio2" src="audio2.mp3" preload="auto"></audio>
   <audio id="audio3" src="audio3.mp3" preload="auto"></audio>
-
-  <video id="video4" src="video4.mp4" autoplay playsinline></video>
 
   <div class="card">
     <h2>🎉 Tocá la imagen</h2>
@@ -117,7 +105,6 @@
     const frases = document.getElementById('frases');
     const cartel = document.getElementById('cartel');
     const cuenta = document.getElementById('cuenta');
-    const video4 = document.getElementById('video4');
 
     const audio1 = document.getElementById('audio1');
     const audio2 = document.getElementById('audio2');
@@ -149,13 +136,6 @@
     });
 
     function mostrarCuentaRegresiva() {
-      audio3.pause();
-      audio3.currentTime = 0;
-      video4.style.display = "block";
-      video4.currentTime = 0;
-      video4.play().catch(() => {
-        console.log("Autoplay bloqueado para video 4");
-      });
       let n = 3;
       cuenta.classList.add('visible');
       cuenta.textContent = n;
@@ -201,5 +181,3 @@
   </script>
 </body>
 </html>
-      
-     
