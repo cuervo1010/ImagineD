@@ -46,11 +46,9 @@
       font-size: 16px;
       color: #444;
     }
-    #cartel {
+    #cartel, #cartel2 {
       position: absolute;
       top: 20px;
-      background: #ffeb3b;
-      color: #000;
       padding: 10px 20px;
       border-radius: 20px;
       font-weight: bold;
@@ -60,21 +58,17 @@
       transform: scale(0.8);
       transition: opacity 0.8s ease, transform 0.5s ease;
     }
-    #cartel.visible {
+    #cartel {
+      background: #ffeb3b;
+      color: #000;
+    }
+    #cartel2 {
+      background: #ffccbc;
+      color: #000;
+    }
+    #cartel.visible, #cartel2.visible {
       opacity: 1;
       transform: scale(1);
-    }
-    #cuenta {
-      position: absolute;
-      bottom: 30px;
-      font-size: 40px;
-      font-weight: bold;
-      color: #00796b;
-      opacity: 0;
-      transition: opacity 0.5s ease;
-    }
-    #cuenta.visible {
-      opacity: 1;
     }
     #reiniciar {
       display: none;
@@ -104,7 +98,7 @@
   </div>
 
   <div id="cartel">¡Vamos juntos!</div>
-  <div id="cuenta"></div>
+  <div id="cartel2">Me gustaría que me acompañes</div>
 
   <script>
     let imagenActual = 1;
@@ -113,7 +107,7 @@
     const estado = document.getElementById('estado');
     const frases = document.getElementById('frases');
     const cartel = document.getElementById('cartel');
-    const cuenta = document.getElementById('cuenta');
+    const cartel2 = document.getElementById('cartel2');
     const reiniciar = document.getElementById('reiniciar');
 
     const audio1 = document.getElementById('audio1');
@@ -121,8 +115,7 @@
     const audio3 = document.getElementById('audio3');
 
     const audios = [audio1, audio2, audio3];
-    const imagenes = ['imagen1.png', 'imagen2.png', null]; // null para imagen 3
-
+    const imagenes = ['imagen1.png', 'imagen2.png', null];
     const textos = [
       [],
       ["Me gastaría que vengas"],
@@ -144,22 +137,6 @@
       });
     }
 
-    function mostrarCuentaRegresiva() {
-      let n = 3;
-      cuenta.classList.add('visible');
-      cuenta.textContent = n;
-      const intervalo = setInterval(() => {
-        n--;
-        if (n > 0) {
-          cuenta.textContent = n;
-        } else {
-          clearInterval(intervalo);
-          cuenta.classList.remove('visible');
-          window.location.href = "https://wa.me/5491135936634?text=siiiiiiiiii%20vamoosssss%20juntos";
-        }
-      }, 1000);
-    }
-
     reiniciar.addEventListener('click', () => {
       imagenActual = 1;
       img.style.display = "block";
@@ -168,7 +145,7 @@
       estado.textContent = "Mostrando imagen 1";
       frases.innerHTML = "";
       cartel.classList.remove('visible');
-      cuenta.classList.remove('visible');
+      cartel2.classList.remove('visible');
       reiniciar.style.display = "none";
       reproducirAudio(0);
     });
@@ -205,19 +182,26 @@
         img.classList.remove('fade-out');
         video.classList.remove('fade-out');
 
+        cartel.classList.remove('visible');
+        cartel2.classList.remove('visible');
+        reiniciar.style.display = "none";
+
+        if (imagenActual === 2) {
+          cartel2.classList.add('visible');
+        }
+
         if (imagenActual === 3) {
-          setTimeout(() => {
-            cartel.classList.add('visible');
-            mostrarCuentaRegresiva();
-            reiniciar.style.display = "inline-block";
-          }, 1000);
-        } else {
-          cartel.classList.remove('visible');
-          cuenta.classList.remove('visible');
-          reiniciar.style.display = "none";
+          reiniciar.style.display = "inline-block";
         }
       }, 500);
     }
+
+    video.addEventListener('ended', () => {
+      cartel.classList.add('visible');
+      setTimeout(() => {
+        window.location.href = "https://wa.me/5491135936634?text=siiiiiiiiii%20vamoosssss%20juntos";
+      }, 2000);
+    });
   </script>
 </body>
 </html>
