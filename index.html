@@ -2,12 +2,12 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>¡Tarjeta Interactiva!</title>
+  <title>Tarjeta Interactiva</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #f9f9f9, #e0f7fa);
+      background: linear-gradient(135deg, #f0f8ff, #e0f7fa);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -16,38 +16,45 @@
     }
     .card {
       background: white;
-      padding: 30px;
+      padding: 20px;
       border-radius: 15px;
       box-shadow: 0 8px 20px rgba(0,0,0,0.2);
       text-align: center;
       max-width: 400px;
     }
-    h1 {
+    h2 {
       color: #00796b;
+      margin-bottom: 20px;
     }
-    p {
-      font-size: 18px;
-      margin: 20px 0;
-    }
-    button {
-      background-color: #00796b;
-      color: white;
-      border: none;
-      padding: 12px 20px;
-      font-size: 16px;
-      border-radius: 8px;
+    img {
+      width: 100%;
+      border-radius: 10px;
       cursor: pointer;
+      transition: transform 0.3s ease;
     }
-    button:hover {
-      background-color: #004d40;
+    img:hover {
+      transform: scale(1.05);
     }
   </style>
 </head>
 <body>
   <div class="card">
-    <h1>🎉 ¡Hola Hernán!</h1>
-    <p>Esta es tu tarjeta interactiva. Tocá el botón para responder o compartir.</p>
-    <button onclick="alert('¡Gracias por tu visita!')">Responder</button>
+    <h2>🎉 Tocá la imagen</h2>
+    <img id="imagen" src="imagen1.png" alt="Imagen 1" onclick="cambiarImagen()">
   </div>
+
+  <script>
+    let imagenActual = 1;
+    function cambiarImagen() {
+      const img = document.getElementById('imagen');
+      if (imagenActual === 1) {
+        img.src = 'imagen2.png';
+        imagenActual = 2;
+      } else {
+        img.src = 'imagen1.png';
+        imagenActual = 1;
+      }
+    }
+  </script>
 </body>
 </html>
