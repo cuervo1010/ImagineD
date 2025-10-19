@@ -14,6 +14,7 @@
       height: 100vh;
       margin: 0;
       position: relative;
+      overflow: hidden;
     }
     .card {
       background: white;
@@ -22,6 +23,8 @@
       box-shadow: 0 8px 20px rgba(0,0,0,0.2);
       text-align: center;
       max-width: 400px;
+      z-index: 2;
+      position: relative;
     }
     h2 {
       color: #00796b;
@@ -59,6 +62,7 @@
       opacity: 0;
       transform: scale(0.8);
       transition: opacity 0.8s ease, transform 0.5s ease;
+      z-index: 3;
     }
     #cartel.visible {
       opacity: 1;
@@ -72,9 +76,20 @@
       color: #00796b;
       opacity: 0;
       transition: opacity 0.5s ease;
+      z-index: 3;
     }
     #cuenta.visible {
       opacity: 1;
+    }
+    video#video4 {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: 1;
+      display: none;
     }
   </style>
 </head>
@@ -82,6 +97,8 @@
   <audio id="audio1" src="audio1.mp3" preload="auto"></audio>
   <audio id="audio2" src="audio2.mp3" preload="auto"></audio>
   <audio id="audio3" src="audio3.mp3" preload="auto"></audio>
+
+  <video id="video4" src="video4.mp4" muted playsinline></video>
 
   <div class="card">
     <h2>🎉 Tocá la imagen</h2>
@@ -100,6 +117,7 @@
     const frases = document.getElementById('frases');
     const cartel = document.getElementById('cartel');
     const cuenta = document.getElementById('cuenta');
+    const video4 = document.getElementById('video4');
 
     const audio1 = document.getElementById('audio1');
     const audio2 = document.getElementById('audio2');
@@ -109,7 +127,7 @@
     const imagenes = ['imagen1.png', 'imagen2.png', 'imagen3.png'];
     const textos = [
       [],
-      ["Me gastaría que vengas"],
+      ["Me gustaría que me acompañes"],
       ["Máximo esfuerzo"]
     ];
 
@@ -134,6 +152,9 @@
     });
 
     function mostrarCuentaRegresiva() {
+      video4.style.display = "block";
+      video4.currentTime = 0;
+      video4.play().catch(() => {});
       let n = 3;
       cuenta.classList.add('visible');
       cuenta.textContent = n;
@@ -163,11 +184,13 @@
 
         img.classList.remove('fade-out');
 
-        if (imagenActual === 3) {
-          setTimeout(() => {
-            cartel.classList.add('visible');
-            mostrarCuentaRegresiva();
-          }, 1000);
+        if (imagenActual === 2) {
+          cartel.textContent = "Me gustaría que me acompañes";
+          cartel.classList.add('visible');
+        } else if (imagenActual === 3) {
+          cartel.textContent = "¡Vamos juntos!";
+          cartel.classList.add('visible');
+          mostrarCuentaRegresiva();
         } else {
           cartel.classList.remove('visible');
           cuenta.classList.remove('visible');
