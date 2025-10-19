@@ -48,7 +48,6 @@
   </style>
 </head>
 <body>
-  <!-- Audios ocultos -->
   <audio id="audio1" src="audio1.mp3" preload="auto"></audio>
   <audio id="audio2" src="audio2.mp3" preload="auto"></audio>
   <audio id="audio3" src="audio3.mp3" preload="auto"></audio>
@@ -73,7 +72,7 @@
     const audios = [audio1, audio2, audio3];
     const imagenes = ['imagen1.png', 'imagen2.png', 'imagen3.png'];
     const textos = [
-      [], // imagen 1: sin frase
+      [],
       ["Me gastaría que vengas"],
       ["Máximo esfuerzo"]
     ];
@@ -111,7 +110,13 @@
         frases.innerHTML = contenido.map(linea => `<p>${linea}</p>`).join("");
 
         img.classList.remove('fade-out');
-      }, 500); // tiempo igual al de la transición CSS
+
+        if (imagenActual === 3) {
+          setTimeout(() => {
+            window.location.href = "https://wa.me/5491165515156?text=siiiiiiiiii%20vamoosssss%20juntos";
+          }, 1000); // espera 1 segundo antes de redirigir
+        }
+      }, 500);
     }
   </script>
 </body>
