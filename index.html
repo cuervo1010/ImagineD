@@ -35,6 +35,11 @@
     img:hover {
       transform: scale(1.05);
     }
+    #frases p {
+      margin: 5px 0;
+      font-size: 16px;
+      color: #444;
+    }
   </style>
 </head>
 <body>
@@ -47,18 +52,27 @@
     <h2>🎉 Tocá la imagen</h2>
     <img id="imagen" src="imagen1.png" alt="Imagen 1" onclick="cambiarImagen()">
     <p id="estado" style="margin-top: 10px; color: #555;">Mostrando imagen 1</p>
+    <div id="frases" style="margin-top: 10px;"></div>
   </div>
 
   <script>
     let imagenActual = 1;
     const img = document.getElementById('imagen');
     const estado = document.getElementById('estado');
+    const frases = document.getElementById('frases');
+
     const audios = [
       document.getElementById('audio1'),
       document.getElementById('audio2'),
       document.getElementById('audio3')
     ];
     const imagenes = ['imagen1.png', 'imagen2.png', 'imagen3.png'];
+
+    const textos = [
+      [], // imagen 1: sin frase
+      ["Me gastaría que vengas"],
+      ["Máximo esfuerzo"]
+    ];
 
     function reproducirAudio(index) {
       audios.forEach((audio, i) => {
@@ -76,6 +90,7 @@
 
     window.addEventListener('load', () => {
       reproducirAudio(0);
+      frases.innerHTML = "";
     });
 
     function cambiarImagen() {
@@ -83,6 +98,9 @@
       img.src = imagenes[imagenActual - 1];
       estado.textContent = `Mostrando imagen ${imagenActual}`;
       reproducirAudio(imagenActual - 1);
+
+      const contenido = textos[imagenActual - 1];
+      frases.innerHTML = contenido.map(linea => `<p>${linea}</p>`).join("");
     }
   </script>
 </body>
