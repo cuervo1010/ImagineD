@@ -30,10 +30,15 @@
       width: 100%;
       border-radius: 10px;
       cursor: pointer;
-      transition: transform 0.3s ease;
+      opacity: 1;
+      transition: opacity 0.5s ease;
     }
-    img:hover {
-      transform: scale(1.05);
+    img.fade-out {
+      opacity: 0;
+    }
+    #estado {
+      margin-top: 10px;
+      color: #555;
     }
     #frases p {
       margin: 5px 0;
@@ -51,8 +56,8 @@
   <div class="card">
     <h2>🎉 Tocá la imagen</h2>
     <img id="imagen" src="imagen1.png" alt="Imagen 1" onclick="cambiarImagen()">
-    <p id="estado" style="margin-top: 10px; color: #555;">Mostrando imagen 1</p>
-    <div id="frases" style="margin-top: 10px;"></div>
+    <p id="estado">Mostrando imagen 1</p>
+    <div id="frases"></div>
   </div>
 
   <script>
@@ -61,13 +66,12 @@
     const estado = document.getElementById('estado');
     const frases = document.getElementById('frases');
 
-    const audios = [
-      document.getElementById('audio1'),
-      document.getElementById('audio2'),
-      document.getElementById('audio3')
-    ];
-    const imagenes = ['imagen1.png', 'imagen2.png', 'imagen3.png'];
+    const audio1 = document.getElementById('audio1');
+    const audio2 = document.getElementById('audio2');
+    const audio3 = document.getElementById('audio3');
 
+    const audios = [audio1, audio2, audio3];
+    const imagenes = ['imagen1.png', 'imagen2.png', 'imagen3.png'];
     const textos = [
       [], // imagen 1: sin frase
       ["Me gastaría que vengas"],
@@ -77,9 +81,10 @@
     function reproducirAudio(index) {
       audios.forEach((audio, i) => {
         if (i === index) {
+          audio.pause();
           audio.currentTime = 0;
           audio.play().catch(() => {
-            console.log('Autoplay bloqueado, se necesita interacción del usuario');
+            console.log(`Autoplay bloqueado para audio ${i + 1}`);
           });
         } else {
           audio.pause();
@@ -94,13 +99,19 @@
     });
 
     function cambiarImagen() {
-      imagenActual = (imagenActual % 3) + 1;
-      img.src = imagenes[imagenActual - 1];
-      estado.textContent = `Mostrando imagen ${imagenActual}`;
-      reproducirAudio(imagenActual - 1);
+      img.classList.add('fade-out');
 
-      const contenido = textos[imagenActual - 1];
-      frases.innerHTML = contenido.map(linea => `<p>${linea}</p>`).join("");
+      setTimeout(() => {
+        imagenActual = (imagenActual % 3) + 1;
+        img.src = imagenes[imagenActual - 1];
+        estado.textContent = `Mostrando imagen ${imagenActual}`;
+        reproducirAudio(imagenActual - 1);
+
+        const contenido = textos[imagenActual - 1];
+        frases.innerHTML = contenido.map(linea => `<p>${linea}</p>`).join("");
+
+        img.classList.remove('fade-out');
+      }, 500); // tiempo igual al de la transición CSS
     }
   </script>
 </body>
