@@ -92,6 +92,7 @@
     <h2>🎉 Tocá la imagen</h2>
     <img id="imagen" src="imagen1.png" alt="Imagen 1" onclick="cambiarImagen()">
     <video id="video3" src="video3.mp4" style="display:none;" muted playsinline></video>
+    <video id="video4" src="video4.mp4" style="display:none;" muted playsinline></video>
     <p id="estado">Mostrando imagen 1</p>
     <div id="frases"></div>
     <button id="reiniciar">🔄 Volver a empezar</button>
@@ -103,7 +104,8 @@
   <script>
     let imagenActual = 1;
     const img = document.getElementById('imagen');
-    const video = document.getElementById('video3');
+    const video3 = document.getElementById('video3');
+    const video4 = document.getElementById('video4');
     const estado = document.getElementById('estado');
     const frases = document.getElementById('frases');
     const cartel = document.getElementById('cartel');
@@ -118,7 +120,7 @@
     const imagenes = ['imagen1.png', 'imagen2.png', null];
     const textos = [
       [],
-      ["Me gustaría que vengas"],
+      ["Me gastaría que vengas"],
       ["Máximo esfuerzo"]
     ];
 
@@ -140,7 +142,8 @@
     reiniciar.addEventListener('click', () => {
       imagenActual = 1;
       img.style.display = "block";
-      video.style.display = "none";
+      video3.style.display = "none";
+      video4.style.display = "none";
       img.src = imagenes[0];
       estado.textContent = "Mostrando imagen 1";
       frases.innerHTML = "";
@@ -157,19 +160,22 @@
 
     function cambiarImagen() {
       img.classList.add('fade-out');
-      video.classList.add('fade-out');
+      video3.classList.add('fade-out');
+      video4.classList.add('fade-out');
 
       setTimeout(() => {
         imagenActual = (imagenActual % 3) + 1;
 
         if (imagenActual === 3) {
           img.style.display = "none";
-          video.style.display = "block";
-          video.currentTime = 0;
-          video.play();
+          video3.style.display = "block";
+          video4.style.display = "none";
+          video3.currentTime = 0;
+          video3.play();
         } else {
           img.style.display = "block";
-          video.style.display = "none";
+          video3.style.display = "none";
+          video4.style.display = "none";
           img.src = imagenes[imagenActual - 1];
         }
 
@@ -180,7 +186,8 @@
         frases.innerHTML = contenido.map(linea => `<p>${linea}</p>`).join("");
 
         img.classList.remove('fade-out');
-        video.classList.remove('fade-out');
+        video3.classList.remove('fade-out');
+        video4.classList.remove('fade-out');
 
         cartel.classList.remove('visible');
         cartel2.classList.remove('visible');
@@ -196,7 +203,14 @@
       }, 500);
     }
 
-    video.addEventListener('ended', () => {
+    video3.addEventListener('ended', () => {
+      video3.style.display = "none";
+      video4.style.display = "block";
+      video4.currentTime = 0;
+      video4.play();
+    });
+
+    video4.addEventListener('ended', () => {
       cartel.classList.add('visible');
       setTimeout(() => {
         window.location.href = "https://wa.me/5491135936634?text=siiiiiiiiii%20vamoosssss%20juntos";
@@ -205,3 +219,6 @@
   </script>
 </body>
 </html>
+
+
+  
