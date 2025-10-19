@@ -40,6 +40,10 @@
     img.fade-out {
       opacity: 0;
     }
+    img.oculto {
+      opacity: 0;
+      pointer-events: none;
+    }
     #estado {
       margin-top: 10px;
       color: #555;
@@ -90,7 +94,7 @@
 
   <div class="card">
     <h2>🎉 Tocá la imagen</h2>
-    <img id="imagen" src="imagen1.png" alt="Imagen 1" onclick="cambiarImagen()">
+    <img id="imagen" class="oculto" src="imagen1.png" alt="Imagen 1" onclick="cambiarImagen()">
     <p id="estado">Mostrando imagen 1</p>
     <div id="frases"></div>
   </div>
@@ -152,6 +156,9 @@
       reproducirAudio(0);
       frases.innerHTML = "";
       mostrarCuentaRegresiva(5);
+      setTimeout(() => {
+        img.classList.remove('oculto');
+      }, 2000);
     });
 
     function cambiarImagen() {
